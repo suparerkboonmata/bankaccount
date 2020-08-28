@@ -27,8 +27,31 @@ public class BankAccountRestController {
     }
     
     @PostMapping
-    public BankAccount creade(@RequestBody BankAccount bankaccount){
+    public BankAccount create(@RequestBody BankAccount bankaccount){
         repository.save(bankaccount);
         return bankaccount;
     }
+
+    @PutMapping("/balance/{id}")
+    public BankAccount update(@PathVariable int id,@RequestBody BankAccount bankaccount){
+        BankAccount record = repository.findById(id).get();
+        record.setBalance(bankaccount.getBalance());
+
+        repository.save(record);
+        return record;
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public List<BankAccount> getAllCustomerId(@PathVariable int customerId){
+        return repository.findByCustomerId(customerId);
+    }
+
+   @DeleteMapping("delete/{id}")
+    public BankAccount delete(@PathVariable int id) {
+        BankAccount record = repository.findById(id).get();
+        repository.deleteById(id);
+        return record;
+    }
+
+
 }
